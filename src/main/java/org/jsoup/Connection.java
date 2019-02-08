@@ -2,7 +2,6 @@ package org.jsoup;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -25,7 +24,22 @@ public interface Connection {
      * GET and POST http methods.
      */
     public enum Method {
-        GET, POST
+
+        GET(false), POST(true), PUT(true), DELETE(false), PATCH(true);
+
+        private final boolean hasBody;
+
+        private Method(boolean hasBody) {
+            this.hasBody = hasBody;
+        }
+
+        /**
+         * Check if this HTTP method has/needs a request body
+         * @return if body needed
+         */
+        public final boolean hasBody() {
+            return hasBody;
+        }
     }
 
     /**
@@ -375,7 +389,6 @@ public interface Connection {
      * Represents a HTTP request.
      */
     public interface Request extends Base<Request> {
-
 
         /**
          * Get the request timeout, in milliseconds.
